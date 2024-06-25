@@ -10,6 +10,16 @@ spring:
         enabled: true
         path: /h2-console
 
+    jpa:
+      show-sql: true
+      properties:
+        hibernate:
+          format_sql: true
+          dialect: org.hibernate.dialect.H2Dialect
+
+      hibernate:
+        ddl-auto: create-drop
+
 jwt:
   secret: aaaaadaferpgaelbekbnlebnjlaernenabobnadfaeriijf1293ru3490u08r3hgeuifd
   expire: 86400000
