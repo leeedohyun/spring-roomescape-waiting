@@ -79,7 +79,7 @@ public class JdbcReservationRepository implements ReservationRepository {
     }
 
     @Override
-    public List<Reservation> findAllByUserIdAndThemeIdAndDateBetween(Long userId, Long themeId, LocalDate dateFrom, LocalDate DateTo) {
+    public List<Reservation> findAllByUserIdAndThemeIdAndDateBetween(Long userId, Long themeId, LocalDate dateFrom, LocalDate dateTo) {
         String sql = """
                 SELECT r.id , r.date, t.id as time_id, t.start_at,
                 th.id as theme_id, th.name as theme_name, th.description, th.thumbnail,
@@ -113,7 +113,7 @@ public class JdbcReservationRepository implements ReservationRepository {
                         resultSet.getString("description"),
                         resultSet.getString("thumbnail")
                 )
-        ), userId, themeId, dateFrom, DateTo);
+        ), userId, themeId, dateFrom, dateTo);
     }
 
     @Override
