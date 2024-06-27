@@ -7,13 +7,12 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import roomescape.theme.domain.Theme;
 import roomescape.theme.domain.repository.ThemeRepository;
 
-@Repository
+//@Repository
 public class JdbcThemeRepository implements ThemeRepository {
 
     private final JdbcTemplate jdbcTemplate;

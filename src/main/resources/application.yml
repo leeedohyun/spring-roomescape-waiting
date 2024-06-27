@@ -18,7 +18,11 @@ spring:
           dialect: org.hibernate.dialect.H2Dialect
 
       hibernate:
-        ddl-auto: create-drop
+        ddl-auto: none
+
+    sql:
+      init:
+        mode: always
 
 jwt:
   secret: aaaaadaferpgaelbekbnlebnjlaernenabobnadfaeriijf1293ru3490u08r3hgeuifd

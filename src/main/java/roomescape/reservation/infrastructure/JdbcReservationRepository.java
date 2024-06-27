@@ -16,7 +16,7 @@ import roomescape.theme.domain.Theme;
 import roomescape.time.domain.ReservationTime;
 import roomescape.user.domain.User;
 
-@Repository
+//@Repository
 public class JdbcReservationRepository implements ReservationRepository {
 
     private final JdbcTemplate jdbcTemplate;

@@ -5,12 +5,11 @@ import java.util.Optional;
 
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
 
 import roomescape.user.domain.User;
 import roomescape.user.domain.repository.UserRepository;
 
-@Repository
+//@Repository
 public class JdbcUserRepository implements UserRepository {
 
     private final JdbcTemplate jdbcTemplate;
