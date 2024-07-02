@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import roomescape.admin.dto.SearchRequest;
 import roomescape.reservation.domain.Reservation;
 import roomescape.reservation.domain.repository.ReservationRepository;
+import roomescape.reservation.dto.MyReservationResponse;
 import roomescape.reservation.dto.ReservationCreateRequest;
 import roomescape.reservation.dto.ReservationResponse;
 import roomescape.reservation.exception.PastDateReservationException;
@@ -43,8 +44,7 @@ public class ReservationService {
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 예약 시간입니다."));
         Theme findTheme = themeRepository.findById(request.themeId())
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 테마입니다."));
-        User user = userRepository.findById(memberId)
-                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다."));
+        User user = getUser(memberId);
 
         if (LocalDate.now().isAfter(LocalDate.parse(request.date()))) {
             throw new PastDateReservationException();
@@ -78,5 +78,18 @@ public class ReservationService {
             throw new IllegalArgumentException("존재하지 않는 예약입니다.");
         }
         reservationRepository.deleteById(reservationId);
+    }
+
+    public List<MyReservationResponse> getMyReservations(Long userId) {
+        User user = getUser(userId);
+        List<Reservation> reservations = reservationRepository.findAllByUser(user);
+        return reservations.stream()
+                .map(MyReservationResponse::from)
+                .toList();
+    }
+
+    private User getUser(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다."));
     }
 }

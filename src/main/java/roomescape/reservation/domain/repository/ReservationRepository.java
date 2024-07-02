@@ -6,6 +6,7 @@ import java.util.List;
 import roomescape.reservation.domain.Reservation;
 import roomescape.theme.domain.Theme;
 import roomescape.time.domain.ReservationTime;
+import roomescape.user.domain.User;
 
 public interface ReservationRepository {
 
@@ -14,6 +15,8 @@ public interface ReservationRepository {
     List<Reservation> findAll();
 
     List<Reservation> findAllByUserIdAndThemeIdAndDateBetween(Long userId, Long themeId, LocalDate dateFrom, LocalDate dateTo);
+
+    List<Reservation> findAllByUser(User user);
 
     void deleteById(Long reservationId);
 

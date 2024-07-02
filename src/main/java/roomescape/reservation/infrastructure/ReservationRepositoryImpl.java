@@ -9,6 +9,7 @@ import roomescape.reservation.domain.Reservation;
 import roomescape.reservation.domain.repository.ReservationRepository;
 import roomescape.theme.domain.Theme;
 import roomescape.time.domain.ReservationTime;
+import roomescape.user.domain.User;
 
 @Repository
 public class ReservationRepositoryImpl implements ReservationRepository {
@@ -27,6 +28,11 @@ public class ReservationRepositoryImpl implements ReservationRepository {
     @Override
     public List<Reservation> findAll() {
         return jpaReservationRepository.findAll();
+    }
+
+    @Override
+    public List<Reservation> findAllByUser(User user) {
+        return jpaReservationRepository.findAllByUser(user);
     }
 
     @Override

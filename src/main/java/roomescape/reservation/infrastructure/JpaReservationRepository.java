@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import roomescape.reservation.domain.Reservation;
 import roomescape.theme.domain.Theme;
 import roomescape.time.domain.ReservationTime;
+import roomescape.user.domain.User;
 
 public interface JpaReservationRepository extends JpaRepository<Reservation, Long> {
 
@@ -20,6 +21,8 @@ public interface JpaReservationRepository extends JpaRepository<Reservation, Lon
           AND r.date BETWEEN :dateFrom AND :dateTo
         """)
     List<Reservation> findAllByUserIdAndThemeIdAndDateBetween(Long userId, Long themeId, LocalDate dateFrom, LocalDate dateTo);
+
+    List<Reservation> findAllByUser(User user);
 
     @Query("""
         SELECT COUNT(r) > 0 
