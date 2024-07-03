@@ -156,4 +156,13 @@ class ReservationControllerTest {
                 .then().log().all()
                 .statusCode(HttpStatus.NO_CONTENT.value());
     }
+    
+    @Test
+    void 내_예약_목록_조회() {
+        RestAssured.given().log().all()
+                .cookie("token", accessToken)
+                .when().get("/reservations-mine")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value());
+    }
 }

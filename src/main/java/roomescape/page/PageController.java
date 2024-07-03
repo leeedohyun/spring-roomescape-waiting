@@ -15,4 +15,9 @@ public class PageController {
     public String login() {
         return "login";
     }
+
+    @GetMapping("/reservation-mine")
+    public String myReservation() {
+        return "reservation-mine";
+    }
 }
