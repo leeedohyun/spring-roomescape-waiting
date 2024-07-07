@@ -1,12 +1,14 @@
 package roomescape.waiting.application;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import roomescape.reservation.domain.repository.ReservationRepository;
+import roomescape.reservation.dto.MyReservationResponse;
 import roomescape.reservation.exception.PastDateReservationException;
 import roomescape.theme.domain.Theme;
 import roomescape.theme.domain.repository.ThemeRepository;
@@ -19,6 +21,7 @@ import roomescape.waiting.domain.repository.ReservationWaitingRepository;
 import roomescape.waiting.dto.ReservationWaitingRequest;
 
 @Service
+@Transactional(readOnly = true)
 public class ReservationWaitingService {
 
     private final ReservationWaitingRepository reservationWaitingRepository;
@@ -58,5 +61,14 @@ public class ReservationWaitingService {
 
         ReservationWaiting reservationWaiting = request.toReservationWaiting(waitingUser, findReservationTime, findTheme);
         return reservationWaitingRepository.save(reservationWaiting).getId();
+    }
+
+    public List<MyReservationResponse> getMyWaiting(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow();
+        List<ReservationWaiting> reservationWaitings = reservationWaitingRepository.findAllByUser(user);
+        return reservationWaitings.stream()
+                .map(MyReservationResponse::from)
+                .toList();
     }
 }

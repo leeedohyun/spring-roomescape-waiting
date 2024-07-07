@@ -24,7 +24,6 @@ public class ReservationWaiting {
     private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -52,5 +51,17 @@ public class ReservationWaiting {
 
     public Long getId() {
         return id;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public ReservationTime getTime() {
+        return time;
+    }
+
+    public Theme getTheme() {
+        return theme;
     }
 }
