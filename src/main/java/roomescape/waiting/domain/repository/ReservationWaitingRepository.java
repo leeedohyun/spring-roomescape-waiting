@@ -10,4 +10,6 @@ import roomescape.waiting.domain.ReservationWaiting;
 public interface ReservationWaitingRepository extends JpaRepository<ReservationWaiting, Long> {
 
     List<ReservationWaiting> findAllByUser(User user);
+
+    boolean existsByUser(User user);
 }

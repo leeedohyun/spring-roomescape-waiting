@@ -71,4 +71,17 @@ public class ReservationWaitingService {
                 .map(MyReservationResponse::from)
                 .toList();
     }
+
+    public void deleteWaiting(Long waitingId, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow();
+        ReservationWaiting reservationWaiting = reservationWaitingRepository.findById(waitingId)
+                .orElseThrow();
+
+        if (!reservationWaitingRepository.existsByUser(user)) {
+            throw new IllegalArgumentException("예약 대기 중인 내역이 없습니다.");
+        }
+
+        reservationWaitingRepository.delete(reservationWaiting);
+    }
 }
