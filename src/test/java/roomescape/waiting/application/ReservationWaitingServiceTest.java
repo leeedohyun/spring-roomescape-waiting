@@ -5,6 +5,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -88,5 +91,43 @@ class ReservationWaitingServiceTest {
         // when & then
         assertThatThrownBy(() ->
                 reservationWaitingService.addWaiting(new ReservationWaitingRequest(LocalDate.now().toString(), 1L, 1L, 1L), 1L));
+    }
+
+    @Test
+    void 예약_대기를_삭제한다() {
+        // given
+        User user = new User(1L, "브라운", "brown@email.com", "password", "USER");
+        ReservationTime time = new ReservationTime(1L, "10:00");
+        Theme theme = new Theme(1L, "레벨1 탈출", "우테코 레벨1을 탈출하는 내용입니다.",
+                "https://i.pinimg.com/236x/6e/bc/46/6ebc461a94a49f9ea3b8bbe2204145d4.jpg");
+        ReservationWaiting reservationWaiting = new ReservationWaiting(1L, LocalDate.now(), user, time, theme);
+
+        given(userRepository.findById(anyLong())).willReturn(Optional.of(user));
+        given(reservationWaitingRepository.findById(anyLong())).willReturn(Optional.of(reservationWaiting));
+        given(reservationWaitingRepository.existsByUser(any())).willReturn(true);
+        willDoNothing().given(reservationWaitingRepository).delete(any());
+
+        // when
+        reservationWaitingService.deleteWaiting(1L, 1L);
+
+        // then
+        verify(reservationWaitingRepository, times((1))).delete(reservationWaiting);
+    }
+
+    @Test
+    void 예약_대기를_하지_않았다면_삭제에_실패한다() {
+        // given
+        User user = new User(1L, "브라운", "brown@email.com", "password", "USER");
+        ReservationTime time = new ReservationTime(1L, "10:00");
+        Theme theme = new Theme(1L, "레벨1 탈출", "우테코 레벨1을 탈출하는 내용입니다.",
+                "https://i.pinimg.com/236x/6e/bc/46/6ebc461a94a49f9ea3b8bbe2204145d4.jpg");
+        ReservationWaiting reservationWaiting = new ReservationWaiting(1L, LocalDate.now(), user, time, theme);
+
+        given(userRepository.findById(anyLong())).willReturn(Optional.of(user));
+        given(reservationWaitingRepository.findById(anyLong())).willReturn(Optional.of(reservationWaiting));
+        given(reservationWaitingRepository.existsByUser(any())).willReturn(false);
+
+        // when & then
+        assertThatThrownBy(() -> reservationWaitingService.deleteWaiting(1L, 1L));
     }
 }

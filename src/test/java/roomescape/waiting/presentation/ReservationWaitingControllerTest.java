@@ -43,4 +43,17 @@ class ReservationWaitingControllerTest {
                 .then().log().all()
                 .statusCode(HttpStatus.CREATED.value());
     }
+
+    @Test
+    void 예약_대기를_취소한다() {
+        // given
+        예약_대기를_한다();
+
+        // when & then
+        RestAssured.given().log().all()
+                .cookie("token", accessToken)
+                .when().delete("/reservations/waiting/1")
+                .then().log().all()
+                .statusCode(HttpStatus.NO_CONTENT.value());
+    }
 }
