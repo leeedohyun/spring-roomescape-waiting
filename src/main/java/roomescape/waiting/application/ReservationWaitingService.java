@@ -7,7 +7,6 @@ import java.util.NoSuchElementException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import roomescape.reservation.domain.repository.ReservationRepository;
 import roomescape.reservation.dto.MyReservationResponse;
 import roomescape.reservation.exception.PastDateReservationException;
 import roomescape.theme.domain.Theme;
@@ -25,18 +24,15 @@ import roomescape.waiting.dto.ReservationWaitingRequest;
 public class ReservationWaitingService {
 
     private final ReservationWaitingRepository reservationWaitingRepository;
-    private final ReservationRepository reservationRepository;
     private final ReservationTimeRepository reservationTimeRepository;
     private final ThemeRepository themeRepository;
     private final UserRepository userRepository;
 
     public ReservationWaitingService(ReservationWaitingRepository reservationWaitingRepository,
-                                     ReservationRepository reservationRepository,
                                      ReservationTimeRepository reservationTimeRepository,
                                      ThemeRepository themeRepository,
                                      UserRepository userRepository) {
         this.reservationWaitingRepository = reservationWaitingRepository;
-        this.reservationRepository = reservationRepository;
         this.reservationTimeRepository = reservationTimeRepository;
         this.themeRepository = themeRepository;
         this.userRepository = userRepository;
@@ -46,16 +42,16 @@ public class ReservationWaitingService {
     public Long addWaiting(ReservationWaitingRequest request, Long userId) {
         User waitingUser = userRepository.findById(userId)
                 .orElseThrow();
-        ReservationTime findReservationTime = reservationTimeRepository.findById(request.timeId())
+        ReservationTime findReservationTime = reservationTimeRepository.findById(request.time())
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 예약 시간입니다."));
-        Theme findTheme = themeRepository.findById(request.themeId())
+        Theme findTheme = themeRepository.findById(request.theme())
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 테마입니다."));
 
         if (LocalDate.now().isAfter(LocalDate.parse(request.date()))) {
             throw new PastDateReservationException();
         }
 
-        if (reservationRepository.existsByUserAndDateAndTimeAndTheme(waitingUser, LocalDate.parse(request.date()), findReservationTime, findTheme)) {
+        if (reservationWaitingRepository.existsByUserAndDateAndTimeAndTheme(waitingUser, LocalDate.parse(request.date()), findReservationTime, findTheme)) {
             throw new IllegalArgumentException("이미 예약하셨습니다.");
         }
 

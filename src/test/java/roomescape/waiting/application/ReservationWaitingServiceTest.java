@@ -18,7 +18,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import roomescape.reservation.domain.repository.ReservationRepository;
 import roomescape.theme.domain.Theme;
 import roomescape.theme.domain.repository.ThemeRepository;
 import roomescape.time.domain.ReservationTime;
@@ -34,9 +33,6 @@ class ReservationWaitingServiceTest {
 
     @Mock
     private ReservationWaitingRepository reservationWaitingRepository;
-
-    @Mock
-    private ReservationRepository reservationRepository;
 
     @Mock
     private ReservationTimeRepository reservationTimeRepository;
@@ -63,10 +59,10 @@ class ReservationWaitingServiceTest {
         given(userRepository.findById(anyLong())).willReturn(Optional.of(user));
         given(reservationTimeRepository.findById(anyLong())).willReturn(Optional.of(time));
         given(themeRepository.findById(anyLong())).willReturn(Optional.of(theme));
-        given(reservationRepository.existsByUserAndDateAndTimeAndTheme(any(), any(), any(), any())).willReturn(false);
+        given(reservationWaitingRepository.existsByUserAndDateAndTimeAndTheme(any(), any(), any(), any())).willReturn(false);
         given(reservationWaitingRepository.save(any())).willReturn(reservationWaiting);
 
-        ReservationWaitingRequest request = new ReservationWaitingRequest(date.toString(), 1L, 1L, 1L);
+        ReservationWaitingRequest request = new ReservationWaitingRequest(date.toString(), 1L, 1L);
 
         // when
         Long waitingId = reservationWaitingService.addWaiting(request, 1L);
@@ -86,11 +82,11 @@ class ReservationWaitingServiceTest {
         given(userRepository.findById(anyLong())).willReturn(Optional.of(user));
         given(reservationTimeRepository.findById(anyLong())).willReturn(Optional.of(time));
         given(themeRepository.findById(anyLong())).willReturn(Optional.of(theme));
-        given(reservationRepository.existsByUserAndDateAndTimeAndTheme(any(), any(), any(), any())).willReturn(true);
+        given(reservationWaitingRepository.existsByUserAndDateAndTimeAndTheme(any(), any(), any(), any())).willReturn(true);
 
         // when & then
         assertThatThrownBy(() ->
-                reservationWaitingService.addWaiting(new ReservationWaitingRequest(LocalDate.now().toString(), 1L, 1L, 1L), 1L));
+                reservationWaitingService.addWaiting(new ReservationWaitingRequest(LocalDate.now().toString(), 1L, 1L), 1L));
     }
 
     @Test
