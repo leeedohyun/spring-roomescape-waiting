@@ -69,9 +69,4 @@ public class ReservationRepositoryImpl implements ReservationRepository {
     public boolean existsByThemeId(Long themeId) {
         return jpaReservationRepository.existsByThemeId(themeId);
     }
-
-    @Override
-    public boolean existsByUserAndDateAndTimeAndTheme(User user, LocalDate date, ReservationTime time, Theme theme) {
-        return jpaReservationRepository.existsByUserAndDateAndTimeAndTheme(user, date, time, theme);
-    }
 }

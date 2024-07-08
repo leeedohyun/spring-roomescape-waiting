@@ -29,6 +29,4 @@ public interface ReservationRepository {
     boolean existsByDateAndReservationTimeAndTheme(String date, ReservationTime reservationTime, Theme theme);
 
     boolean existsByThemeId(Long themeId);
-
-    boolean existsByUserAndDateAndTimeAndTheme(User user, LocalDate date, ReservationTime time, Theme theme);
 }
