@@ -18,6 +18,7 @@ import roomescape.user.domain.repository.UserRepository;
 import roomescape.waiting.domain.ReservationWaiting;
 import roomescape.waiting.domain.repository.ReservationWaitingRepository;
 import roomescape.waiting.dto.ReservationWaitingRequest;
+import roomescape.waiting.dto.ReservationWaitingResponse;
 
 @Service
 @Transactional(readOnly = true)
@@ -39,7 +40,7 @@ public class ReservationWaitingService {
     }
 
     @Transactional
-    public Long addWaiting(ReservationWaitingRequest request, Long userId) {
+    public ReservationWaitingResponse addWaiting(ReservationWaitingRequest request, Long userId) {
         User waitingUser = userRepository.findById(userId)
                 .orElseThrow();
         ReservationTime findReservationTime = reservationTimeRepository.findById(request.time())
@@ -56,7 +57,8 @@ public class ReservationWaitingService {
         }
 
         ReservationWaiting reservationWaiting = request.toReservationWaiting(waitingUser, findReservationTime, findTheme);
-        return reservationWaitingRepository.save(reservationWaiting).getId();
+        ReservationWaiting savedWaiting = reservationWaitingRepository.save(reservationWaiting);
+        return ReservationWaitingResponse.from(savedWaiting);
     }
 
     public List<MyReservationResponse> getMyWaiting(Long userId) {
@@ -72,7 +74,7 @@ public class ReservationWaitingService {
         User user = userRepository.findById(userId)
                 .orElseThrow();
         ReservationWaiting reservationWaiting = reservationWaitingRepository.findById(waitingId)
-                .orElseThrow();
+                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 예약 대기 중인 내역입니다."));
 
         if (!reservationWaitingRepository.existsByUser(user)) {
             throw new IllegalArgumentException("예약 대기 중인 내역이 없습니다.");

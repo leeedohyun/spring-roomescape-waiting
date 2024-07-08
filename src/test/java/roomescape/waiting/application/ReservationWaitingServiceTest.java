@@ -27,6 +27,7 @@ import roomescape.user.domain.repository.UserRepository;
 import roomescape.waiting.domain.ReservationWaiting;
 import roomescape.waiting.domain.repository.ReservationWaitingRepository;
 import roomescape.waiting.dto.ReservationWaitingRequest;
+import roomescape.waiting.dto.ReservationWaitingResponse;
 
 @ExtendWith(MockitoExtension.class)
 class ReservationWaitingServiceTest {
@@ -65,10 +66,10 @@ class ReservationWaitingServiceTest {
         ReservationWaitingRequest request = new ReservationWaitingRequest(date.toString(), 1L, 1L);
 
         // when
-        Long waitingId = reservationWaitingService.addWaiting(request, 1L);
+        ReservationWaitingResponse reservationWaitingResponse = reservationWaitingService.addWaiting(request, 1L);
 
         // then
-        assertThat(waitingId).isEqualTo(1L);
+        assertThat(reservationWaitingResponse.id()).isEqualTo(1L);
     }
 
     @Test

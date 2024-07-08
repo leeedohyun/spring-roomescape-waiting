@@ -39,7 +39,7 @@ class ReservationWaitingControllerTest {
                 .cookie("token", accessToken)
                 .contentType(ContentType.JSON)
                 .body(request)
-                .when().post("/reservations/waiting")
+                .when().post("/waiting")
                 .then().log().all()
                 .statusCode(HttpStatus.CREATED.value());
     }
@@ -52,7 +52,7 @@ class ReservationWaitingControllerTest {
         // when & then
         RestAssured.given().log().all()
                 .cookie("token", accessToken)
-                .when().delete("/reservations/waiting/1")
+                .when().delete("/waiting/1")
                 .then().log().all()
                 .statusCode(HttpStatus.NO_CONTENT.value());
     }
