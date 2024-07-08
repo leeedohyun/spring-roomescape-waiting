@@ -41,8 +41,7 @@ public class ReservationWaitingService {
 
     @Transactional
     public ReservationWaitingResponse addWaiting(ReservationWaitingRequest request, Long userId) {
-        User waitingUser = userRepository.findById(userId)
-                .orElseThrow();
+        User waitingUser = getUser(userId);
         ReservationTime findReservationTime = reservationTimeRepository.findById(request.time())
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 예약 시간입니다."));
         Theme findTheme = themeRepository.findById(request.theme())
@@ -62,8 +61,7 @@ public class ReservationWaitingService {
     }
 
     public List<MyReservationResponse> getMyWaiting(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow();
+        User user = getUser(userId);
         List<ReservationWaiting> reservationWaitings = reservationWaitingRepository.findAllByUser(user);
         return reservationWaitings.stream()
                 .map(MyReservationResponse::from)
@@ -71,8 +69,7 @@ public class ReservationWaitingService {
     }
 
     public void deleteWaiting(Long waitingId, Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow();
+        User user = getUser(userId);
         ReservationWaiting reservationWaiting = reservationWaitingRepository.findById(waitingId)
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 예약 대기 중인 내역입니다."));
 
@@ -81,5 +78,10 @@ public class ReservationWaitingService {
         }
 
         reservationWaitingRepository.delete(reservationWaiting);
+    }
+
+    private User getUser(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 사용자입니다."));
     }
 }
