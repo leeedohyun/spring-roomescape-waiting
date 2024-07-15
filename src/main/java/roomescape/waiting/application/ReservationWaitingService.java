@@ -47,11 +47,11 @@ public class ReservationWaitingService {
         Theme findTheme = themeRepository.findById(request.theme())
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 테마입니다."));
 
-        if (LocalDate.now().isAfter(LocalDate.parse(request.date()))) {
+        if (LocalDate.now().isAfter(request.date())) {
             throw new PastDateReservationException();
         }
 
-        if (reservationWaitingRepository.existsByUserAndDateAndTimeAndTheme(waitingUser, LocalDate.parse(request.date()), findReservationTime, findTheme)) {
+        if (reservationWaitingRepository.existsByUserAndDateAndTimeAndTheme(waitingUser, request.date(), findReservationTime, findTheme)) {
             throw new IllegalArgumentException("이미 예약하셨습니다.");
         }
 

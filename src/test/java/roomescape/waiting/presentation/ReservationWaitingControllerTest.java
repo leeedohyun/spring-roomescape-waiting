@@ -33,7 +33,7 @@ class ReservationWaitingControllerTest {
 
     @Test
     void 예약_대기를_한다() {
-        ReservationWaitingRequest request = new ReservationWaitingRequest(LocalDate.now().plusDays(1).toString(), 1L, 1L);
+        ReservationWaitingRequest request = new ReservationWaitingRequest(LocalDate.now().plusDays(1), 1L, 1L);
 
         RestAssured.given().log().all()
                 .cookie("token", accessToken)

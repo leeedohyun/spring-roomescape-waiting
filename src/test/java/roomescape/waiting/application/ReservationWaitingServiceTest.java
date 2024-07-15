@@ -63,7 +63,7 @@ class ReservationWaitingServiceTest {
         given(reservationWaitingRepository.existsByUserAndDateAndTimeAndTheme(any(), any(), any(), any())).willReturn(false);
         given(reservationWaitingRepository.save(any())).willReturn(reservationWaiting);
 
-        ReservationWaitingRequest request = new ReservationWaitingRequest(date.toString(), 1L, 1L);
+        ReservationWaitingRequest request = new ReservationWaitingRequest(date, 1L, 1L);
 
         // when
         ReservationWaitingResponse reservationWaitingResponse = reservationWaitingService.addWaiting(request, 1L);
@@ -87,7 +87,7 @@ class ReservationWaitingServiceTest {
 
         // when & then
         assertThatThrownBy(() ->
-                reservationWaitingService.addWaiting(new ReservationWaitingRequest(LocalDate.now().toString(), 1L, 1L), 1L));
+                reservationWaitingService.addWaiting(new ReservationWaitingRequest(LocalDate.now(), 1L, 1L), 1L));
     }
 
     @Test

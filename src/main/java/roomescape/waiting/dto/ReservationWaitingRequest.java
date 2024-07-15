@@ -10,13 +10,13 @@ import roomescape.user.domain.User;
 import roomescape.waiting.domain.ReservationWaiting;
 
 public record ReservationWaitingRequest(@NotNull(message = "날짜는 필수 입력 값입니다.")
-                                        String date,
+                                        LocalDate date,
                                         @NotNull(message = "테마 ID는 필수 입력 값입니다.")
                                         Long theme,
                                         @NotNull(message = "시간 ID는 필수 입력 값입니다.")
                                         Long time) {
 
     public ReservationWaiting toReservationWaiting(User waitingUser, ReservationTime reservationTime, Theme theme) {
-        return new ReservationWaiting(LocalDate.parse(date), waitingUser, reservationTime, theme);
+        return new ReservationWaiting(date, waitingUser, reservationTime, theme);
     }
 }
