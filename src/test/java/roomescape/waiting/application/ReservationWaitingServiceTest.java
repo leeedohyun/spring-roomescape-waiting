@@ -1,7 +1,7 @@
 package roomescape.waiting.application;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
@@ -69,7 +69,13 @@ class ReservationWaitingServiceTest {
         ReservationWaitingResponse reservationWaitingResponse = reservationWaitingService.addWaiting(request, 1L);
 
         // then
-        assertThat(reservationWaitingResponse.id()).isEqualTo(1L);
+        assertSoftly(softly -> {
+            softly.assertThat(reservationWaitingResponse.id()).isEqualTo(1L);
+            softly.assertThat(reservationWaitingResponse.theme()).isEqualTo("레벨1 탈출");
+            softly.assertThat(reservationWaitingResponse.date()).isEqualTo(date.toString());
+            softly.assertThat(reservationWaitingResponse.time()).isEqualTo("10:00");
+            softly.assertThat(reservationWaitingResponse.status()).isEqualTo("예약대기");
+        });
     }
 
     @Test
