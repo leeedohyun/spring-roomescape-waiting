@@ -72,10 +72,7 @@ public class ReservationWaitingService {
         User user = getUser(userId);
         ReservationWaiting reservationWaiting = reservationWaitingRepository.findById(waitingId)
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 예약 대기 중인 내역입니다."));
-
-        if (!reservationWaitingRepository.existsByUser(user)) {
-            throw new IllegalArgumentException("예약 대기 중인 내역이 없습니다.");
-        }
+        reservationWaiting.validateWaitingBy(user);
 
         reservationWaitingRepository.delete(reservationWaiting);
     }

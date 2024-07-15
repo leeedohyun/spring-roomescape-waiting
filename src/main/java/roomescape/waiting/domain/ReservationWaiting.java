@@ -49,6 +49,16 @@ public class ReservationWaiting {
         this.theme = theme;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void validateWaitingBy(User waitingUser) {
+        if (!user.equals(waitingUser)) {
+            throw new IllegalArgumentException("예약 대기자가 아닙니다.");
+        }
+    }
+
     public Long getId() {
         return id;
     }
